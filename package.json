@@ -1,0 +1,8 @@
+{
+  "type": "module",
+  "scripts": {},
+  "devDependencies": {
+    "vite-plus": "catalog:"
+  },
+  "packageManager": "pnpm@11.7.0"
+}

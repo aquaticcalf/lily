@@ -1,0 +1,11 @@
+{
+  "name": "cloud",
+  "type": "module",
+  "scripts": {
+    "dev": "eve dev"
+  },
+  "dependencies": {
+    "@ai-sdk/google": "catalog:",
+    "eve": "catalog:"
+  }
+}

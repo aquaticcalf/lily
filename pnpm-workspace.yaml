@@ -1,0 +1,9 @@
+packages:
+  - cloud
+
+catalogMode: prefer
+
+catalog:
+  "@ai-sdk/google": ^3.0.83
+  eve: ^0.11.10
+  vite-plus: latest
