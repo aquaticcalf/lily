@@ -1,0 +1,18 @@
+{
+  "name": "db",
+  "type": "module",
+  "scripts": {
+    "dev": "vp run generate && turso dev --db-file local.db && drizzle-kit push",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate"
+  },
+  "dependencies": {
+    "@libsql/client": "catalog:",
+    "@paralleldrive/cuid2": "catalog:",
+    "dotenv": "catalog:",
+    "drizzle-orm": "catalog:"
+  },
+  "devDependencies": {
+    "drizzle-kit": "catalog:"
+  }
+}
