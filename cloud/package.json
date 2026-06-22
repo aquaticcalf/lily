@@ -2,7 +2,8 @@
   "name": "cloud",
   "type": "module",
   "scripts": {
-    "dev": "eve dev"
+    "dev": "eve dev",
+    "build": "eve build"
   },
   "dependencies": {
     "@ai-sdk/google": "catalog:",
