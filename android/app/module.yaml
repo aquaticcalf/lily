@@ -1,0 +1,11 @@
+product: android/app
+
+dependencies:
+  - ../ui
+  - androidx.activity:activity-compose:1.8.2
+  - androidx.appcompat:appcompat:1.6.1
+settings:
+  compose: enabled
+  junit: junit-4
+  android:
+    namespace: lol.calf.lily

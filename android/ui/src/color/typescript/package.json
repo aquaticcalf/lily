@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "colors": "tsx index.ts"
+  },
+  "dependencies": {
+    "colorjs.io": "^0.6.1",
+    "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.22.4"
+  }
+}
