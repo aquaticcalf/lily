@@ -6,6 +6,10 @@
   },
   "dependencies": {
     "@ai-sdk/google": "catalog:",
-    "eve": "catalog:"
+    "@libsql/client": "catalog:",
+    "db": "workspace:*",
+    "drizzle-orm": "catalog:",
+    "eve": "catalog:",
+    "google-auth-library": "catalog:"
   }
 }
