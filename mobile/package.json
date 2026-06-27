@@ -1,0 +1,11 @@
+{
+    "name": "mobile",
+    "private": true,
+    "main": "index.tsx",
+    "scripts": {
+        "dev": "expo start"
+    },
+    "dependencies": {
+        "expo": "catalog:"
+    }
+}

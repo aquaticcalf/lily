@@ -1,0 +1,51 @@
+{
+    "name": "lily",
+    "slug": "lily",
+    "appId": "lol.calf.lily",
+    "cli": {
+        "appVersionSource": "remote"
+    },
+    "build": {
+        "production": {
+            "channel": "production",
+            "autoIncrement": true,
+            "distribution": "store",
+            "environment": "production",
+            "android": {
+                "buildType": "app-bundle",
+                "image": "latest"
+            },
+            "env": {
+                "EXPO_PUBLIC_APP_ENV": "production"
+            }
+        },
+        "preview": {
+            "channel": "preview",
+            "autoIncrement": true,
+            "distribution": "store",
+            "android": {
+                "buildType": "apk",
+                "image": "latest"
+            },
+            "environment": "preview",
+            "env": {
+                "EXPO_PUBLIC_APP_ENV": "preview"
+            }
+        },
+        "development": {
+            "developmentClient": true,
+            "distribution": "internal",
+            "environment": "development",
+            "android": {
+                "image": "latest"
+            },
+            "env": {
+                "EXPO_PUBLIC_APP_ENV": "development"
+            }
+        },
+        "submit": {
+            "preview": {},
+            "production": {}
+        }
+    }
+}
