@@ -6,17 +6,14 @@ const APP_CONFIG = {
   production: {
     url: "https://lily.calf.lol/api/",
     mode: "prod",
-    apiKey: process.env.PRIVATE_API_KEY,
   },
   preview: {
     url: "https://lily.calf.lol/api/",
     mode: "staging",
-    apiKey: process.env.PRIVATE_API_KEY,
   },
   development: {
     url: (process.env.LOCAL_API_URL || "http://localhost:3000") + "/api/",
     mode: "local",
-    apiKey: process.env.PRIVATE_API_KEY,
   },
 }
 
