@@ -10,8 +10,9 @@
   "dependencies": {
     "@libsql/client": "catalog:",
     "@paralleldrive/cuid2": "catalog:",
-    "dotenv": "catalog:",
-    "drizzle-orm": "catalog:"
+    "@t3-oss/env-core": "catalog:",
+    "drizzle-orm": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "drizzle-kit": "catalog:"

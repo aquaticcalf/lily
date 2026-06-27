@@ -27,9 +27,6 @@ catalogs:
     axios:
       specifier: ^1.18.1
       version: 1.18.1
-    dotenv:
-      specifier: ^17.4.2
-      version: 17.4.2
     drizzle-kit:
       specifier: ^0.31.10
       version: 0.31.10
@@ -83,6 +80,9 @@ importers:
       '@libsql/client':
         specifier: 'catalog:'
         version: 0.17.4
+      '@t3-oss/env-core':
+        specifier: 'catalog:'
+        version: 0.13.11(typescript@6.0.3)(zod@4.4.3)
       db:
         specifier: workspace:*
         version: link:../db
@@ -91,10 +91,13 @@ importers:
         version: 0.45.2(@libsql/client@0.17.4)
       eve:
         specifier: 'catalog:'
-        version: 0.11.10(@libsql/client@0.17.4)(ai@7.0.0-beta.178(zod@4.4.3))(dotenv@17.4.2)(drizzle-orm@0.45.2(@libsql/client@0.17.4))(jiti@2.7.0)(lru-cache@11.5.1)(react@19.2.7)(vite@8.1.0(@types/node@26.0.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0))
+        version: 0.11.10(@libsql/client@0.17.4)(ai@7.0.0-beta.178(zod@4.4.3))(drizzle-orm@0.45.2(@libsql/client@0.17.4))(jiti@2.7.0)(lru-cache@11.5.1)(react@19.2.7)(vite@8.1.0(@types/node@26.0.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0))
       google-auth-library:
         specifier: 'catalog:'
         version: 10.9.0
+      zod:
+        specifier: 'catalog:'
+        version: 4.4.3
 
   db:
     dependencies:
@@ -104,12 +107,15 @@ importers:
       '@paralleldrive/cuid2':
         specifier: 'catalog:'
         version: 3.3.0
-      dotenv:
+      '@t3-oss/env-core':
         specifier: 'catalog:'
-        version: 17.4.2
+        version: 0.13.11(typescript@6.0.3)(zod@4.4.3)
       drizzle-orm:
         specifier: 'catalog:'
         version: 0.45.2(@libsql/client@0.17.4)
+      zod:
+        specifier: 'catalog:'
+        version: 4.4.3
     devDependencies:
       drizzle-kit:
         specifier: 'catalog:'
@@ -2466,10 +2472,6 @@ packages:
 
   dom-accessibility-api@0.5.16:
     resolution: {integrity: sha512-X7BJ2yElsnOJ30pZF4uIIDfBEVgF4XEBxL9Bxhy6dnrm5hkzqmsWHGTiHqRiITNhMyFLyAiWndIJP7Z1NTteDg==}
-
-  dotenv@17.4.2:
-    resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
-    engines: {node: '>=12'}
 
   drizzle-kit@0.31.10:
     resolution: {integrity: sha512-7OZcmQUrdGI+DUNNsKBn1aW8qSoKuTH7d0mYgSP8bAzdFzKoovxEFnoGQp2dVs82EOJeYycqRtciopszwUf8bw==}
@@ -6463,8 +6465,6 @@ snapshots:
 
   dom-accessibility-api@0.5.16: {}
 
-  dotenv@17.4.2: {}
-
   drizzle-kit@0.31.10:
     dependencies:
       '@drizzle-team/brocli': 0.10.2
@@ -6628,10 +6628,10 @@ snapshots:
 
   etag@1.8.1: {}
 
-  eve@0.11.10(@libsql/client@0.17.4)(ai@7.0.0-beta.178(zod@4.4.3))(dotenv@17.4.2)(drizzle-orm@0.45.2(@libsql/client@0.17.4))(jiti@2.7.0)(lru-cache@11.5.1)(react@19.2.7)(vite@8.1.0(@types/node@26.0.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0)):
+  eve@0.11.10(@libsql/client@0.17.4)(ai@7.0.0-beta.178(zod@4.4.3))(drizzle-orm@0.45.2(@libsql/client@0.17.4))(jiti@2.7.0)(lru-cache@11.5.1)(react@19.2.7)(vite@8.1.0(@types/node@26.0.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0)):
     dependencies:
       ai: 7.0.0-beta.178(zod@4.4.3)
-      nitro: 3.0.260610-beta(@libsql/client@0.17.4)(dotenv@17.4.2)(drizzle-orm@0.45.2(@libsql/client@0.17.4))(jiti@2.7.0)(lru-cache@11.5.1)(vite@8.1.0(@types/node@26.0.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0))
+      nitro: 3.0.260610-beta(@libsql/client@0.17.4)(drizzle-orm@0.45.2(@libsql/client@0.17.4))(jiti@2.7.0)(lru-cache@11.5.1)(vite@8.1.0(@types/node@26.0.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0))
     optionalDependencies:
       react: 19.2.7
       vite: 8.1.0(@types/node@26.0.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0)
@@ -7452,7 +7452,7 @@ snapshots:
 
   nf3@0.3.17: {}
 
-  nitro@3.0.260610-beta(@libsql/client@0.17.4)(dotenv@17.4.2)(drizzle-orm@0.45.2(@libsql/client@0.17.4))(jiti@2.7.0)(lru-cache@11.5.1)(vite@8.1.0(@types/node@26.0.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0)):
+  nitro@3.0.260610-beta(@libsql/client@0.17.4)(drizzle-orm@0.45.2(@libsql/client@0.17.4))(jiti@2.7.0)(lru-cache@11.5.1)(vite@8.1.0(@types/node@26.0.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0)):
     dependencies:
       consola: 3.4.2
       crossws: 0.4.6(srvx@0.11.17)
@@ -7469,7 +7469,6 @@ snapshots:
       unenv: 2.0.0-rc.24
       unstorage: 2.0.0-alpha.7(db0@0.3.4(@libsql/client@0.17.4)(drizzle-orm@0.45.2(@libsql/client@0.17.4)))(lru-cache@11.5.1)(ofetch@2.0.0-alpha.3)
     optionalDependencies:
-      dotenv: 17.4.2
       jiti: 2.7.0
       vite: 8.1.0(@types/node@26.0.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0)
     transitivePeerDependencies:

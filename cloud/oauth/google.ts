@@ -8,8 +8,9 @@ import { db } from "./client"
 import { users } from "db"
 import { eq } from "drizzle-orm"
 import { OAuth2Client } from "google-auth-library"
+import { env } from "../env"
 
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
+const client = new OAuth2Client(env.GOOGLE_CLIENT_ID)
 
 export function nativeGoogleAuth(): AuthFn<Request> {
   return async (request) => {
@@ -19,7 +20,7 @@ export function nativeGoogleAuth(): AuthFn<Request> {
     try {
       const ticket = await client.verifyIdToken({
         idToken: token,
-        audience: process.env.GOOGLE_CLIENT_ID,
+        audience: env.GOOGLE_CLIENT_ID,
       })
 
       const payload = ticket.getPayload()

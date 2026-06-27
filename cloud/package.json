@@ -8,9 +8,11 @@
   "dependencies": {
     "@ai-sdk/google": "catalog:",
     "@libsql/client": "catalog:",
+    "@t3-oss/env-core": "catalog:",
     "db": "workspace:*",
     "drizzle-orm": "catalog:",
     "eve": "catalog:",
-    "google-auth-library": "catalog:"
+    "google-auth-library": "catalog:",
+    "zod": "catalog:"
   }
 }
