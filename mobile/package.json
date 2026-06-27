@@ -16,6 +16,9 @@
   },
   "devDependencies": {
     "@types/react": "catalog:",
-    "@types/react-native": "catalog:"
+    "@types/react-native": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "uniwind": "catalog:"
   }
 }
