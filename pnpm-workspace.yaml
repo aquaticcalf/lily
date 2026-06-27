@@ -10,12 +10,18 @@ catalog:
   "@libsql/client": ^0.17.4
   "@paralleldrive/cuid2": ^3.3.0
   "@t3-oss/env-core": ^0.13.11
+  "@tanstack/react-query": ^5.101.1
+  "@types/react": ^19.2.17
+  "@types/react-native": ^0.73.0
+  axios: ^1.18.1
   dotenv: ^17.4.2
   drizzle-kit: ^0.31.10
   drizzle-orm: ^0.45.2
   eve: ^0.11.10
   expo: ^56.0.12
   google-auth-library: ^10.7.0
+  react: ^19.2.7
+  react-native: ^0.86.0
   vite-plus: latest
   zod: ^4.4.3
 
