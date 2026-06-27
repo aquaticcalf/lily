@@ -1,7 +1,6 @@
 packages:
   - cloud
   - db
-  - mobile
 
 catalogMode: prefer
 
@@ -9,15 +8,11 @@ catalog:
   "@ai-sdk/google": ^3.0.83
   "@libsql/client": ^0.17.4
   "@paralleldrive/cuid2": ^3.3.0
-  '@types/react': ~19.2.17
   dotenv: ^17.4.2
   drizzle-kit: ^0.31.10
   drizzle-orm: ^0.45.2
   eve: ^0.11.10
-  expo: ^56.0.12
   google-auth-library: ^10.7.0
-  react-native-unistyles: ^3.2.5
-  typescript: ~6.0.3
   vite-plus: latest
 
 allowBuilds:
