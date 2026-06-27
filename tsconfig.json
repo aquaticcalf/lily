@@ -6,7 +6,10 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "paths": {
+      "#/*": ["./mobile/*"]
+    }
   },
   "include": ["**/*.ts", "**/*.d.ts"]
 }

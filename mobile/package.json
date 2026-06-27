@@ -6,7 +6,8 @@
         "dev": "expo start"
     },
     "dependencies": {
-        "expo": "catalog:"
+        "expo": "catalog:",
+        "react-native-unistyles": "catalog:"
     },
     "devDependencies": {
         "@types/react": "catalog:",
