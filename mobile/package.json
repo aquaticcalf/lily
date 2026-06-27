@@ -1,0 +1,15 @@
+{
+    "name": "mobile",
+    "private": true,
+    "main": "index.ts",
+    "scripts": {
+        "dev": "expo start"
+    },
+    "dependencies": {
+        "expo": "catalog:"
+    },
+    "devDependencies": {
+        "@types/react": "catalog:",
+        "typescript": "catalog:"
+    }
+}
