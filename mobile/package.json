@@ -6,6 +6,8 @@
     "dev": "expo start"
   },
   "dependencies": {
-    "expo": "catalog:"
+    "@t3-oss/env-core": "catalog:",
+    "expo": "catalog:",
+    "zod": "catalog:"
   }
 }
