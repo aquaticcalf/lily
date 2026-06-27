@@ -1,7 +1,7 @@
 import { registerRootComponent } from "expo"
 
 function App() {
-    return null
+  return null
 }
 
 registerRootComponent(App)

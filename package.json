@@ -1,6 +1,8 @@
 {
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "postinstall": "vp config --hooks-dir hooks"
+  },
   "devDependencies": {
     "vite-plus": "catalog:"
   },
