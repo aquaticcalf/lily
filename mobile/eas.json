@@ -1,7 +1,4 @@
 {
-  "name": "lily",
-  "slug": "lily",
-  "appId": "lol.calf.lily",
   "cli": {
     "appVersionSource": "remote"
   },
@@ -42,10 +39,10 @@
       "env": {
         "EXPO_PUBLIC_APP_ENV": "development"
       }
-    },
-    "submit": {
-      "preview": {},
-      "production": {}
     }
+  },
+  "submit": {
+    "preview": {},
+    "production": {}
   }
 }

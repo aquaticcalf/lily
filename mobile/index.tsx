@@ -1,8 +1,9 @@
-import { useQuery } from "@tanstack/react-query"
+﻿import { useQuery } from "@tanstack/react-query"
 import { registerRootComponent } from "expo"
-import { Text, View } from "react-native"
+import { ActivityIndicator, Text, View } from "react-native"
 import { Uniwind, withUniwind } from "uniwind"
 import { APIProvider } from "./api/provider"
+import { AuthProvider, SignInScreen, useAuth } from "./auth"
 
 import "./theme.css"
 
@@ -12,7 +13,11 @@ const StyledView = withUniwind(View)
 const StyledText = withUniwind(Text)
 
 function Providers({ children }: { children: React.ReactNode }) {
-  return <APIProvider>{children}</APIProvider>
+  return (
+    <AuthProvider>
+      <APIProvider>{children}</APIProvider>
+    </AuthProvider>
+  )
 }
 
 function Health() {
@@ -27,10 +32,28 @@ function Health() {
   )
 }
 
+function AuthGate() {
+  const { isLoading, isSignedIn } = useAuth()
+
+  if (isLoading) {
+    return (
+      <StyledView className="flex-1 justify-center items-center bg-white dark:bg-black">
+        <ActivityIndicator />
+      </StyledView>
+    )
+  }
+
+  if (!isSignedIn) {
+    return <SignInScreen />
+  }
+
+  return <Health />
+}
+
 function App() {
   return (
     <Providers>
-      <Health />
+      <AuthGate />
     </Providers>
   )
 }

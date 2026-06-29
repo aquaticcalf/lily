@@ -1,9 +1,14 @@
 {
   "type": "module",
   "scripts": {
+    "dev": "turbo dev --ui=tui",
+    "build:android:development": "pnpm --filter mobile build:android:development",
+    "build:android:preview": "pnpm --filter mobile build:android:preview",
+    "build:android:production": "pnpm --filter mobile build:android:production",
     "postinstall": "vp config --hooks-dir hooks"
   },
   "devDependencies": {
+    "turbo": "catalog:",
     "vite-plus": "catalog:"
   },
   "packageManager": "pnpm@11.7.0"

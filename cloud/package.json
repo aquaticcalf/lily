@@ -2,15 +2,14 @@
   "name": "cloud",
   "type": "module",
   "scripts": {
-    "dev": "eve dev",
+    "dev": "node scripts/dev.mjs",
     "build": "eve build"
   },
   "dependencies": {
     "@ai-sdk/google": "catalog:",
-    "@libsql/client": "catalog:",
     "@t3-oss/env-core": "catalog:",
-    "db": "workspace:*",
-    "drizzle-orm": "catalog:",
+    "convex": "catalog:",
+    "data": "workspace:*",
     "eve": "catalog:",
     "google-auth-library": "catalog:",
     "zod": "catalog:"

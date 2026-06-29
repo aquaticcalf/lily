@@ -4,13 +4,12 @@ import {
   ForbiddenError,
   UnauthenticatedError,
 } from "eve/channels/auth"
-import { db } from "./client"
-import { users } from "db"
-import { eq } from "drizzle-orm"
+import { internal } from "data/convex/_generated/api"
 import { OAuth2Client } from "google-auth-library"
+import { convexInternalMutation } from "../convex"
 import { env } from "../env"
 
-const client = new OAuth2Client(env.GOOGLE_CLIENT_ID)
+const googleClient = new OAuth2Client(env.GOOGLE_CLIENT_ID)
 
 export function nativeGoogleAuth(): AuthFn<Request> {
   return async (request) => {
@@ -18,7 +17,7 @@ export function nativeGoogleAuth(): AuthFn<Request> {
     if (!token) return null
 
     try {
-      const ticket = await client.verifyIdToken({
+      const ticket = await googleClient.verifyIdToken({
         idToken: token,
         audience: env.GOOGLE_CLIENT_ID,
       })
@@ -28,25 +27,16 @@ export function nativeGoogleAuth(): AuthFn<Request> {
 
       const userId = payload.sub
 
-      let user = await db.select().from(users).where(eq(users.id, userId)).limit(1)
-
-      if (user.length === 0) {
-        if (!payload.email) {
-          throw new ForbiddenError({ message: "google account has no email." })
-        }
-
-        const newUser = await db
-          .insert(users)
-          .values({
-            id: userId,
-            email: payload.email,
-            name: payload.name ?? "",
-            image: payload.picture ?? "",
-          })
-          .returning()
-
-        user = newUser
+      if (!payload.email) {
+        throw new ForbiddenError({ message: "google account has no email." })
       }
+
+      await convexInternalMutation(internal.users.upsert, {
+        subject: userId,
+        email: payload.email,
+        name: payload.name ?? "",
+        image: payload.picture ?? "",
+      })
 
       return {
         principalId: userId,

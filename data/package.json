@@ -1,0 +1,10 @@
+{
+  "name": "data",
+  "type": "module",
+  "scripts": {
+    "dev": "convex dev"
+  },
+  "dependencies": {
+    "convex": "catalog:"
+  }
+}

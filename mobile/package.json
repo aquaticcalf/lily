@@ -3,15 +3,20 @@
   "private": true,
   "main": "index.tsx",
   "scripts": {
-    "dev": "expo start"
+    "dev": "expo start",
+    "build:android:development": "eas build --profile development --platform android",
+    "build:android:preview": "eas build --profile preview --platform android",
+    "build:android:production": "eas build --profile production --platform android"
   },
   "dependencies": {
     "@t3-oss/env-core": "catalog:",
     "@tanstack/react-query": "catalog:",
     "axios": "catalog:",
     "expo": "catalog:",
+    "expo-dev-client": "catalog:",
     "react": "catalog:",
     "react-native": "catalog:",
+    "react-native-nitro-google-signin": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

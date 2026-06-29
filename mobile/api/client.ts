@@ -7,3 +7,11 @@ export const client = axios.create({
     "X-App-Mode": appConfig.mode,
   },
 })
+
+export function setAuthToken(token: string | null) {
+  if (token) {
+    client.defaults.headers.common["Authorization"] = `Bearer ${token}`
+  } else {
+    delete client.defaults.headers.common["Authorization"]
+  }
+}

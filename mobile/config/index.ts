@@ -12,7 +12,7 @@ const APP_CONFIG = {
     mode: "preview",
   },
   development: {
-    url: (process.env.LOCAL_API_URL || "http://localhost:3000") + "/eve/v1/",
+    url: (env.EXPO_PUBLIC_LOCAL_API_URL || "http://localhost:3000") + "/eve/v1/",
     mode: "local",
   },
 }
