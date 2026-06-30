@@ -1,0 +1,71 @@
+diff --git a/dist/metro/transformer.cjs b/dist/metro/transformer.cjs
+index 96f0bc6dfc82347de21518b2bc8ef7e892990613..fccb2d69e01c7d5603182728a78935b8eb7ee46e 100644
+--- a/dist/metro/transformer.cjs
++++ b/dist/metro/transformer.cjs
+@@ -1523,6 +1523,16 @@ class ProcessorBuilder {
+         const [maybeClassNameSelector] = selector;
+         const newClassName = maybeClassNameSelector?.type === "class" ? maybeClassNameSelector.name : void 0;
+         if (newClassName !== void 0) {
++          if (this.bundlerConfig.themes.includes(newClassName)) {
++            this.declarationConfig.theme = newClassName;
++            this.declarationConfig.root = true;
++            rule.value.declarations?.declarations?.forEach((declaration) => this.addDeclaration(declaration));
++            rule.value.declarations?.importantDeclarations?.forEach((declaration) => this.addDeclaration(declaration, true));
++            rule.value.rules?.forEach((rule2) => this.parseRuleRec(rule2));
++            this.declarationConfig.theme = null;
++            this.declarationConfig.root = false;
++            return;
++          }
+           this.declarationConfig.className = newClassName;
+           this.stylesheets[newClassName] ??= [];
+           this.stylesheets[newClassName].push({});
+diff --git a/dist/metro/transformer.mjs b/dist/metro/transformer.mjs
+index 8ba44bdd8b1c14d8691b1c061ad6f2f53a2ab925..bd1aa7608abd92690f20a09730f2e938faee1124 100644
+--- a/dist/metro/transformer.mjs
++++ b/dist/metro/transformer.mjs
+@@ -1516,6 +1516,16 @@ class ProcessorBuilder {
+         const [maybeClassNameSelector] = selector;
+         const newClassName = maybeClassNameSelector?.type === "class" ? maybeClassNameSelector.name : void 0;
+         if (newClassName !== void 0) {
++          if (this.bundlerConfig.themes.includes(newClassName)) {
++            this.declarationConfig.theme = newClassName;
++            this.declarationConfig.root = true;
++            rule.value.declarations?.declarations?.forEach((declaration) => this.addDeclaration(declaration));
++            rule.value.declarations?.importantDeclarations?.forEach((declaration) => this.addDeclaration(declaration, true));
++            rule.value.rules?.forEach((rule2) => this.parseRuleRec(rule2));
++            this.declarationConfig.theme = null;
++            this.declarationConfig.root = false;
++            return;
++          }
+           this.declarationConfig.className = newClassName;
+           this.stylesheets[newClassName] ??= [];
+           this.stylesheets[newClassName].push({});
+diff --git a/src/bundler/css-processor/processor.ts b/src/bundler/css-processor/processor.ts
+index c8b3bb86e2a50c16ebc3f0404f4d9ac050aba61d..48e1d2537ff0ee85d2784578d21cb3bfc3713f45 100644
+--- a/src/bundler/css-processor/processor.ts
++++ b/src/bundler/css-processor/processor.ts
+@@ -138,6 +138,24 @@ export class ProcessorBuilder {
+                 const newClassName = maybeClassNameSelector?.type === 'class' ? maybeClassNameSelector.name : undefined
+ 
+                 if (newClassName !== undefined) {
++                    // When a standalone class selector matches a registered theme name
++                    // (e.g. .light { --background: #fff } or .dark { --background: #000 }),
++                    // treat its declarations as theme-scoped root variables instead of
++                    // class-based stylesheet entries. This enables system theme switching.
++                    if (this.bundlerConfig.themes.includes(newClassName)) {
++                        this.declarationConfig.theme = newClassName
++                        this.declarationConfig.root = true
++
++                        rule.value.declarations?.declarations?.forEach(declaration => this.addDeclaration(declaration))
++                        rule.value.declarations?.importantDeclarations?.forEach(declaration => this.addDeclaration(declaration, true))
++                        rule.value.rules?.forEach(rule => this.parseRuleRec(rule))
++
++                        this.declarationConfig.theme = null
++                        this.declarationConfig.root = false
++
++                        return
++                    }
++
+                     this.declarationConfig.className = newClassName
+                     this.stylesheets[newClassName] ??= []
+                     this.stylesheets[newClassName].push({})

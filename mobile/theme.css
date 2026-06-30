@@ -1,2 +1,107 @@
 @import "tailwindcss";
 @import "uniwind";
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-agent-neutral: var(--agent-neutral);
+  --color-agent-info: var(--agent-info);
+  --color-agent-info-subtle: var(--agent-info-subtle);
+  --color-agent-success: var(--agent-success);
+  --color-agent-success-subtle: var(--agent-success-subtle);
+  --color-agent-warning: var(--agent-warning);
+  --color-agent-warning-subtle: var(--agent-warning-subtle);
+  --color-agent-danger: var(--agent-danger);
+  --color-agent-danger-subtle: var(--agent-danger-subtle);
+}
+
+.light {
+  --background: #fafafa;
+  --foreground: #09090b;
+  --card: #ffffff;
+  --card-foreground: #09090b;
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
+  --primary: #18181b;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #e4e4e7;
+  --accent-foreground: #18181b;
+  --destructive: #e11d48;
+  --destructive-foreground: #ffffff;
+  --border: #e4e4e7;
+  --input: #f4f4f5;
+  --ring: #a1a1aa;
+  --success: #059669;
+  --success-foreground: #ffffff;
+  --warning: #d97706;
+  --warning-foreground: #ffffff;
+  --agent-neutral: #a1a1aa;
+  --agent-info: #0ea5e9;
+  --agent-info-subtle: #e0f2fe;
+  --agent-success: #10b981;
+  --agent-success-subtle: #d1fae5;
+  --agent-warning: #f59e0b;
+  --agent-warning-subtle: #fef3c7;
+  --agent-danger: #f43f5e;
+  --agent-danger-subtle: #ffe4e6;
+}
+
+.dark {
+  --background: #020617;
+  --foreground: #f8fafc;
+  --card: #09090b;
+  --card-foreground: #f8fafc;
+  --popover: #09090b;
+  --popover-foreground: #f8fafc;
+  --primary: #f8fafc;
+  --primary-foreground: #09090b;
+  --secondary: #18181b;
+  --secondary-foreground: #f8fafc;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --accent: #27272a;
+  --accent-foreground: #f8fafc;
+  --destructive: #fb7185;
+  --destructive-foreground: #09090b;
+  --border: #27272a;
+  --input: #18181b;
+  --ring: #71717a;
+  --success: #34d399;
+  --success-foreground: #052e16;
+  --warning: #fbbf24;
+  --warning-foreground: #451a03;
+  --agent-neutral: #71717a;
+  --agent-info: #38bdf8;
+  --agent-info-subtle: #082f49;
+  --agent-success: #34d399;
+  --agent-success-subtle: #052e16;
+  --agent-warning: #fbbf24;
+  --agent-warning-subtle: #451a03;
+  --agent-danger: #fb7185;
+  --agent-danger-subtle: #4c0519;
+}

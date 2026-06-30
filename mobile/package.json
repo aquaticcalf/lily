@@ -4,9 +4,9 @@
   "main": "index.tsx",
   "scripts": {
     "dev": "expo start",
-    "build:android:development": "eas build --profile development --platform android",
-    "build:android:preview": "eas build --profile preview --platform android",
-    "build:android:production": "eas build --profile production --platform android"
+    "build:android:development": "pnpm dlx eas-cli build --profile development --platform android",
+    "build:android:preview": "pnpm dlx eas-cli build --profile preview --platform android",
+    "build:android:production": "pnpm dlx eas-cli build --profile production --platform android"
   },
   "dependencies": {
     "@t3-oss/env-core": "catalog:",
@@ -14,9 +14,11 @@
     "axios": "catalog:",
     "expo": "catalog:",
     "expo-dev-client": "catalog:",
+    "lucide-react-native": "catalog:",
     "react": "catalog:",
     "react-native": "catalog:",
     "react-native-nitro-google-signin": "catalog:",
+    "react-native-svg": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

@@ -1,7 +1,8 @@
-﻿import {
+import {
   GoogleOneTapSignIn,
   isSuccessResponse,
   isNoSavedCredentialFoundResponse,
+  isCancelledResponse,
 } from "react-native-nitro-google-signin"
 import {
   createContext,
@@ -12,10 +13,12 @@ import {
   useState,
   type ReactNode,
 } from "react"
+import { Alert } from "react-native"
 import { setAuthToken } from "../api/client"
 import { env } from "../env"
 
 GoogleOneTapSignIn.configure({
+  autoSelectOnSignIn: true,
   webClientId: env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
 })
 
@@ -30,6 +33,11 @@ interface AuthState {
 
 const AuthContext = createContext<AuthState | null>(null)
 
+let cachedSession: Pick<AuthState, "idToken" | "user"> = {
+  idToken: null,
+  user: null,
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [idToken, setIdToken] = useState<string | null>(null)
   const [user, setUser] = useState<AuthState["user"]>(null)
@@ -39,10 +47,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAuthToken(token)
     setIdToken(token)
     setUser(nextUser)
+    cachedSession = { idToken: token, user: nextUser }
   }, [])
 
   useEffect(() => {
     async function restoreSession() {
+      if (cachedSession.idToken) {
+        applySession(cachedSession.idToken, cachedSession.user)
+        setIsLoading(false)
+        return
+      }
       try {
         const response = await GoogleOneTapSignIn.signIn()
         if (isSuccessResponse(response)) {
@@ -62,16 +76,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [applySession])
 
   const signIn = useCallback(async () => {
-    let response = await GoogleOneTapSignIn.createAccount()
-    if (isNoSavedCredentialFoundResponse(response)) {
-      response = await GoogleOneTapSignIn.presentExplicitSignIn()
-    }
-    if (isSuccessResponse(response)) {
-      applySession(response.data.idToken, {
-        name: response.data.user.name ?? "",
-        email: response.data.user.email ?? "",
-        photo: response.data.user.photo,
-      })
+    try {
+      let response = await GoogleOneTapSignIn.createAccount()
+      if (isNoSavedCredentialFoundResponse(response) || isCancelledResponse(response)) {
+        response = await GoogleOneTapSignIn.presentExplicitSignIn()
+      }
+      if (isSuccessResponse(response)) {
+        applySession(response.data.idToken, {
+          name: response.data.user.name ?? "",
+          email: response.data.user.email ?? "",
+          photo: response.data.user.photo,
+        })
+      } else {
+        console.log("auth response : ", response)
+        Alert.alert("google auth failed", JSON.stringify(response))
+      }
+    } catch (e) {
+      console.error("sign in error : ", e)
+      Alert.alert("sign in error", String(e))
     }
   }, [applySession])
 
