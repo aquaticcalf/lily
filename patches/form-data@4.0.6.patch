@@ -1,0 +1,10 @@
+diff --git a/lib/browser.js b/lib/browser.js
+index 09e7a3b..c6e8a24 100644
+--- a/lib/browser.js
++++ b/lib/browser.js
+@@ -1,4 +1,4 @@
+ 'use strict';
+ 
+ /* eslint-env browser */
+-module.exports = typeof self === 'object' ? self.FormData : window.FormData;
++module.exports = typeof FormData !== 'undefined' ? FormData : undefined;

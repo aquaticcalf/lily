@@ -27,6 +27,7 @@ module.exports = {
     name: `lily${variant.nameSuffix}`,
     slug: "lily",
     version: "1.0.0",
+    scheme: "lily",
     icon: `${iconRoot}/icon.png`,
     android: {
       package: `lol.calf.lily${variant.packageSuffix}`,
@@ -35,6 +36,7 @@ module.exports = {
         backgroundColor: variant.adaptiveIconBackgroundColor,
       },
     },
+    plugins: ["expo-secure-store", "expo-web-browser"],
     extra: {
       eas: {
         projectId: "5d6ea08b-3c6a-44ce-a2a3-d391e0464396",

@@ -9,15 +9,19 @@
     "build:android:production": "pnpm dlx eas-cli build --profile production --platform android"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "catalog:",
     "@t3-oss/env-core": "catalog:",
     "@tanstack/react-query": "catalog:",
     "axios": "catalog:",
     "expo": "catalog:",
+    "expo-auth-session": "catalog:",
     "expo-dev-client": "catalog:",
+    "expo-http-server": "catalog:",
+    "expo-secure-store": "catalog:",
+    "expo-web-browser": "catalog:",
     "lucide-react-native": "catalog:",
     "react": "catalog:",
     "react-native": "catalog:",
-    "react-native-nitro-google-signin": "catalog:",
     "react-native-svg": "catalog:",
     "zod": "catalog:"
   },
