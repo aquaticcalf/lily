@@ -1,11 +1,8 @@
-import * as WebBrowser from "expo-web-browser"
-import * as HttpServer from "expo-http-server"
+import { Linking } from "react-native"
 import { base64URLEncode } from "./transport"
 import type { SecureStoreOAuthClientProvider } from "./provider"
 import type { OAuthClientInformation } from "./types"
 import type { StreamableHTTPTransport } from "./transport"
-
-const LOCALHOST_PORT = 9876
 
 function sha256(data: Uint8Array): Uint8Array {
   const K = [
@@ -121,23 +118,22 @@ async function generateCodeChallenge(verifier: string): Promise<string> {
   return base64URLEncode(hash)
 }
 
-async function waitForCodeAndRedirect(serviceId: string): Promise<string> {
+function waitForCodeFromDeepLink(redirectUrl: string): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    HttpServer.setup(LOCALHOST_PORT)
-    HttpServer.route(`/callback/${serviceId}`, "GET", async (request) => {
-      const params = JSON.parse(request.paramsJson)
-      const code = params.code ?? null
-      if (code) {
-        resolve(code)
-        return {
-          statusCode: 302,
-          headers: { Location: `lily://auth/mcp/${serviceId}` },
+    const subscription = Linking.addEventListener("url", (event) => {
+      if (event.url.startsWith(redirectUrl)) {
+        const url = new URL(event.url)
+        const code = url.searchParams.get("code")
+        if (code) {
+          subscription.remove()
+          resolve(code)
         }
       }
-      return { statusCode: 400, body: "Missing code" }
     })
-    HttpServer.start()
-    setTimeout(() => reject(new Error("Authorization timed out")), 120_000)
+    setTimeout(() => {
+      subscription.remove()
+      reject(new Error("Authorization timed out"))
+    }, 120_000)
   })
 }
 
@@ -364,9 +360,7 @@ export async function authorizeService(
   const tokens = await provider.tokens()
   if (tokens) return
 
-  provider.setRedirectPort(LOCALHOST_PORT)
-
-  const codePromise = waitForCodeAndRedirect(provider.serviceId)
+  const codePromise = waitForCodeFromDeepLink(provider.redirectUrl)
 
   const result = await auth(provider, { serverUrl })
   if (result !== "REDIRECT") return
@@ -374,8 +368,7 @@ export async function authorizeService(
   const authUrl = provider.getAuthorizationUrl()
   if (!authUrl) throw new Error("No authorization URL available")
 
-  await WebBrowser.openBrowserAsync(authUrl)
-  HttpServer.stop()
+  await Linking.openURL(authUrl)
   const code = await codePromise
 
   await auth(provider, { serverUrl, authorizationCode: code })
@@ -386,9 +379,7 @@ export async function reconnectService(
   provider: SecureStoreOAuthClientProvider,
   serverUrl: string,
 ): Promise<void> {
-  provider.setRedirectPort(LOCALHOST_PORT)
-
-  const codePromise = waitForCodeAndRedirect(provider.serviceId)
+  const codePromise = waitForCodeFromDeepLink(provider.redirectUrl)
 
   const result = await auth(provider, { serverUrl })
   if (result !== "REDIRECT") return
@@ -396,8 +387,7 @@ export async function reconnectService(
   const authUrl = provider.getAuthorizationUrl()
   if (!authUrl) throw new Error("No authorization URL available")
 
-  await WebBrowser.openBrowserAsync(authUrl)
-  HttpServer.stop()
+  await Linking.openURL(authUrl)
   const code = await codePromise
 
   await transport.finishAuth(code)

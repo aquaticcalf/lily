@@ -22,7 +22,13 @@ catalog:
   expo-secure-store: ~56.0.4
   expo-auth-session: ~56.0.14
   expo-web-browser: ~56.0.5
-  expo-http-server: ^0.1.13
+
+  react-native-executorch: ^0.9.2
+  react-native-executorch-expo-resource-fetcher: ^0.9.1
+  expo-file-system: ^57.0.0
+  expo-asset: ^57.0.1
+  zustand: ^5.0.14
+  expo-build-properties: ^57.0.1
 
 allowBuilds:
   esbuild: true

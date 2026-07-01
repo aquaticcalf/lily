@@ -12,16 +12,21 @@
     "@t3-oss/env-core": "catalog:",
     "@tanstack/react-query": "catalog:",
     "expo": "catalog:",
+    "expo-asset": "catalog:",
     "expo-auth-session": "catalog:",
+    "expo-build-properties": "catalog:",
     "expo-dev-client": "catalog:",
-    "expo-http-server": "catalog:",
+    "expo-file-system": "catalog:",
     "expo-secure-store": "catalog:",
     "expo-web-browser": "catalog:",
     "lucide-react-native": "catalog:",
     "react": "catalog:",
     "react-native": "catalog:",
+    "react-native-executorch": "catalog:",
+    "react-native-executorch-expo-resource-fetcher": "catalog:",
     "react-native-svg": "catalog:",
-    "zod": "catalog:"
+    "zod": "catalog:",
+    "zustand": "catalog:"
   },
   "devDependencies": {
     "@types/react": "catalog:",

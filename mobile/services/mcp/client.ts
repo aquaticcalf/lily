@@ -275,7 +275,7 @@ export class MCPClient {
 }
 
 export async function connectService(config: MCPServiceConfig): Promise<ConnectedMCPService> {
-  const provider = new SecureStoreOAuthClientProvider(config.id)
+  const provider = new SecureStoreOAuthClientProvider(config.id, "vscode")
 
   const serverInfo = await discoverOAuthServerInfo(config.serverUrl)
   await provider.saveDiscoveryState({

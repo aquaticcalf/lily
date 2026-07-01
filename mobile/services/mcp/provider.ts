@@ -6,11 +6,15 @@ import type {
   OAuthDiscoveryState,
 } from "./types"
 
+function sanitizeKey(id: string): string {
+  return id.replace(/[^a-zA-Z0-9._-]/g, "_")
+}
+
 const STORAGE_KEYS = {
-  tokens: (id: string) => `mcp/${id}/tokens`,
-  clientInfo: (id: string) => `mcp/${id}/clientInfo`,
-  codeVerifier: (id: string) => `mcp/${id}/codeVerifier`,
-  discoveryState: (id: string) => `mcp/${id}/discovery`,
+  tokens: (id: string) => `mcp.${sanitizeKey(id)}.tokens`,
+  clientInfo: (id: string) => `mcp.${sanitizeKey(id)}.clientInfo`,
+  codeVerifier: (id: string) => `mcp.${sanitizeKey(id)}.codeVerifier`,
+  discoveryState: (id: string) => `mcp.${sanitizeKey(id)}.discovery`,
 } as const
 
 export class SecureStoreOAuthClientProvider {
@@ -27,9 +31,6 @@ export class SecureStoreOAuthClientProvider {
   }
 
   get redirectUrl(): string {
-    if (this._redirectPort) {
-      return `http://localhost:${this._redirectPort}/callback/${this._serviceId}`
-    }
     return `${this.scheme}://auth/mcp/${this._serviceId}`
   }
 
