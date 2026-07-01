@@ -27,6 +27,7 @@ export interface AgentMessageModel {
   createdAt?: string
   status?: AgentRunStatus
   attachments?: AgentAttachment[]
+  toolCall?: ToolCallModel
 }
 
 export interface ToolCallModel {

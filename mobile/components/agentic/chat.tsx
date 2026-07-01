@@ -132,6 +132,8 @@ export function ConversationList({
   )
 }
 
+import { ToolCallCard } from "./actions"
+
 export function AgentMessage({ message }: { message: AgentMessageModel }) {
   const isUser = message.role === "user"
 
@@ -139,16 +141,20 @@ export function AgentMessage({ message }: { message: AgentMessageModel }) {
     <StyledView className={joinClasses("flex-row gap-3", isUser && "justify-end")}>
       {!isUser ? <MessageAvatar role={message.role} /> : null}
       <StyledView className={joinClasses("max-w-[82%] gap-2", isUser && "items-end")}>
-        <StyledView
-          className={joinClasses(
-            "rounded-lg px-4 py-3",
-            isUser ? "bg-primary" : "border border-border bg-card",
-          )}
-        >
-          <AgentText className="text-[15px]" tone={isUser ? "inverse" : "default"}>
-            {message.text}
-          </AgentText>
-        </StyledView>
+        {message.toolCall ? (
+          <ToolCallCard tool={message.toolCall} expanded={true} />
+        ) : message.text ? (
+          <StyledView
+            className={joinClasses(
+              "rounded-lg px-4 py-3",
+              isUser ? "bg-primary" : "border border-border bg-card",
+            )}
+          >
+            <AgentText className="text-[15px]" tone={isUser ? "inverse" : "default"}>
+              {message.text}
+            </AgentText>
+          </StyledView>
+        ) : null}
         {message.attachments?.length ? <AttachmentStrip attachments={message.attachments} /> : null}
         <StyledView className="flex-row items-center gap-2">
           {message.status ? (
@@ -276,7 +282,7 @@ export function Composer({
             onChangeText={onChangeText}
             onSubmitEditing={handleSubmitEditing}
             placeholder={placeholder}
-            placeholderTextColorClassName="text-muted-foreground"
+            placeholderTextColor="#888"
             textAlignVertical="top"
             value={value}
           />

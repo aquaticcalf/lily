@@ -1,0 +1,42 @@
+diff --git a/src/utils/llm.ts b/src/utils/llm.ts
+index 62b509bff48f517fcf6f51df8942978822e96ede..89672a24cac45c200ac1762ac8a02531f0bffd44 100644
+--- a/src/utils/llm.ts
++++ b/src/utils/llm.ts
+@@ -26,14 +26,34 @@ export const parseToolCall: (message: string) => ToolCall[] = (
+     return [];
+   }
+ 
++  const rawStr = unparsedToolCalls[0].trim();
++
++  // Support for LFM pythonic tool calls
++  const lfmMatch = rawStr.match(/^\[([a-zA-Z0-9_\-]+)\((.*)\)\]$/);
++  if (lfmMatch) {
++    const toolName = lfmMatch[1];
++    const argsStr = lfmMatch[2];
++    let argsObj: any = {};
++    if (argsStr.trim().length > 0) {
++      const kwargRegex = /([a-zA-Z0-9_]+)\s*=\s*(?:'([^']*)'|"([^"]*)"|([^,]+))/g;
++      let match;
++      while ((match = kwargRegex.exec(argsStr)) !== null) {
++        const key = match[1];
++        const val = match[2] !== undefined ? match[2] : (match[3] !== undefined ? match[3] : match[4]);
++        argsObj[key] = val;
++      }
++    }
++    return [{ toolName, arguments: argsObj }];
++  }
++
+   let parsedMessage: LLMTool[];
+   try {
+-    parsedMessage = JSON.parse(unparsedToolCalls[0]);
++    parsedMessage = JSON.parse(rawStr);
+   } catch (e) {
+     throw new RnExecutorchError(
+       RnExecutorchErrorCode.InvalidModelOutput,
+-      `Failed to parse tool call JSON from model output: ${unparsedToolCalls[0]}`,
+-      e
++      `Failed to parse tool call JSON from model output: ${rawStr}`,
++      e as Error
+     );
+   }
+ 

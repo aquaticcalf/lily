@@ -34,4 +34,5 @@ allowBuilds:
   esbuild: true
 
 patchedDependencies:
+  react-native-executorch: patches/react-native-executorch.patch
   uniwind: patches/uniwind.patch
