@@ -17,6 +17,50 @@ const STORAGE_KEYS = {
   discoveryState: (id: string) => `mcp.${sanitizeKey(id)}.discovery`,
 } as const
 
+async function setLargeItemAsync(key: string, value: string) {
+  const CHUNK_SIZE = 2000
+  if (value.length <= CHUNK_SIZE) {
+    await SecureStore.deleteItemAsync(`${key}.count`)
+    await SecureStore.setItemAsync(key, value)
+    return
+  }
+
+  const numChunks = Math.ceil(value.length / CHUNK_SIZE)
+  await SecureStore.setItemAsync(`${key}.count`, numChunks.toString())
+  for (let i = 0; i < numChunks; i++) {
+    await SecureStore.setItemAsync(
+      `${key}.${i}`,
+      value.substring(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE),
+    )
+  }
+}
+
+async function getLargeItemAsync(key: string): Promise<string | null> {
+  const countStr = await SecureStore.getItemAsync(`${key}.count`)
+  if (!countStr) {
+    return await SecureStore.getItemAsync(key)
+  }
+  const count = parseInt(countStr, 10)
+  let result = ""
+  for (let i = 0; i < count; i++) {
+    const chunk = await SecureStore.getItemAsync(`${key}.${i}`)
+    if (chunk) result += chunk
+  }
+  return result
+}
+
+async function deleteLargeItemAsync(key: string): Promise<void> {
+  const countStr = await SecureStore.getItemAsync(`${key}.count`)
+  if (countStr) {
+    const count = parseInt(countStr, 10)
+    for (let i = 0; i < count; i++) {
+      await SecureStore.deleteItemAsync(`${key}.${i}`)
+    }
+    await SecureStore.deleteItemAsync(`${key}.count`)
+  }
+  await SecureStore.deleteItemAsync(key)
+}
+
 export class SecureStoreOAuthClientProvider {
   private _authUrl: string | null = null
   private _redirectPort: number | null = null
@@ -48,24 +92,21 @@ export class SecureStoreOAuthClientProvider {
   }
 
   async clientInformation(): Promise<OAuthClientInformation | undefined> {
-    const raw = await SecureStore.getItemAsync(STORAGE_KEYS.clientInfo(this._serviceId))
+    const raw = await getLargeItemAsync(STORAGE_KEYS.clientInfo(this._serviceId))
     return raw ? JSON.parse(raw) : undefined
   }
 
   async saveClientInformation(clientInfo: OAuthClientInformation): Promise<void> {
-    await SecureStore.setItemAsync(
-      STORAGE_KEYS.clientInfo(this._serviceId),
-      JSON.stringify(clientInfo),
-    )
+    await setLargeItemAsync(STORAGE_KEYS.clientInfo(this._serviceId), JSON.stringify(clientInfo))
   }
 
   async tokens(): Promise<OAuthTokens | undefined> {
-    const raw = await SecureStore.getItemAsync(STORAGE_KEYS.tokens(this._serviceId))
+    const raw = await getLargeItemAsync(STORAGE_KEYS.tokens(this._serviceId))
     return raw ? JSON.parse(raw) : undefined
   }
 
   async saveTokens(tokens: OAuthTokens): Promise<void> {
-    await SecureStore.setItemAsync(STORAGE_KEYS.tokens(this._serviceId), JSON.stringify(tokens))
+    await setLargeItemAsync(STORAGE_KEYS.tokens(this._serviceId), JSON.stringify(tokens))
   }
 
   async redirectToAuthorization(authorizationUrl: URL): Promise<void> {
@@ -77,24 +118,21 @@ export class SecureStoreOAuthClientProvider {
   }
 
   async saveCodeVerifier(codeVerifier: string): Promise<void> {
-    await SecureStore.setItemAsync(STORAGE_KEYS.codeVerifier(this._serviceId), codeVerifier)
+    await setLargeItemAsync(STORAGE_KEYS.codeVerifier(this._serviceId), codeVerifier)
   }
 
   async codeVerifier(): Promise<string> {
-    const verifier = await SecureStore.getItemAsync(STORAGE_KEYS.codeVerifier(this._serviceId))
+    const verifier = await getLargeItemAsync(STORAGE_KEYS.codeVerifier(this._serviceId))
     if (!verifier) throw new Error("No code verifier found")
     return verifier
   }
 
   async saveDiscoveryState(state: OAuthDiscoveryState): Promise<void> {
-    await SecureStore.setItemAsync(
-      STORAGE_KEYS.discoveryState(this._serviceId),
-      JSON.stringify(state),
-    )
+    await setLargeItemAsync(STORAGE_KEYS.discoveryState(this._serviceId), JSON.stringify(state))
   }
 
   async discoveryState(): Promise<OAuthDiscoveryState | undefined> {
-    const raw = await SecureStore.getItemAsync(STORAGE_KEYS.discoveryState(this._serviceId))
+    const raw = await getLargeItemAsync(STORAGE_KEYS.discoveryState(this._serviceId))
     return raw ? JSON.parse(raw) : undefined
   }
 
@@ -102,16 +140,16 @@ export class SecureStoreOAuthClientProvider {
     scope: "all" | "client" | "tokens" | "verifier" | "discovery",
   ): Promise<void> {
     if (scope === "all" || scope === "tokens") {
-      await SecureStore.deleteItemAsync(STORAGE_KEYS.tokens(this._serviceId))
+      await deleteLargeItemAsync(STORAGE_KEYS.tokens(this._serviceId))
     }
     if (scope === "all" || scope === "client") {
-      await SecureStore.deleteItemAsync(STORAGE_KEYS.clientInfo(this._serviceId))
+      await deleteLargeItemAsync(STORAGE_KEYS.clientInfo(this._serviceId))
     }
     if (scope === "all" || scope === "verifier") {
-      await SecureStore.deleteItemAsync(STORAGE_KEYS.codeVerifier(this._serviceId))
+      await deleteLargeItemAsync(STORAGE_KEYS.codeVerifier(this._serviceId))
     }
     if (scope === "all" || scope === "discovery") {
-      await SecureStore.deleteItemAsync(STORAGE_KEYS.discoveryState(this._serviceId))
+      await deleteLargeItemAsync(STORAGE_KEYS.discoveryState(this._serviceId))
     }
   }
 }

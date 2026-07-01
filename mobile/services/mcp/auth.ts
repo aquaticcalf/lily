@@ -1,4 +1,4 @@
-import { Linking } from "react-native"
+import * as WebBrowser from "expo-web-browser"
 import { base64URLEncode } from "./transport"
 import type { SecureStoreOAuthClientProvider } from "./provider"
 import type { OAuthClientInformation } from "./types"
@@ -116,25 +116,6 @@ async function generateCodeChallenge(verifier: string): Promise<string> {
   const encoder = new TextEncoder()
   const hash = sha256(encoder.encode(verifier))
   return base64URLEncode(hash)
-}
-
-function waitForCodeFromDeepLink(redirectUrl: string): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
-    const subscription = Linking.addEventListener("url", (event) => {
-      if (event.url.startsWith(redirectUrl)) {
-        const url = new URL(event.url)
-        const code = url.searchParams.get("code")
-        if (code) {
-          subscription.remove()
-          resolve(code)
-        }
-      }
-    })
-    setTimeout(() => {
-      subscription.remove()
-      reject(new Error("Authorization timed out"))
-    }, 120_000)
-  })
 }
 
 interface OAuthServerInfo {
@@ -360,16 +341,22 @@ export async function authorizeService(
   const tokens = await provider.tokens()
   if (tokens) return
 
-  const codePromise = waitForCodeFromDeepLink(provider.redirectUrl)
-
   const result = await auth(provider, { serverUrl })
   if (result !== "REDIRECT") return
 
   const authUrl = provider.getAuthorizationUrl()
   if (!authUrl) throw new Error("No authorization URL available")
 
-  await Linking.openURL(authUrl)
-  const code = await codePromise
+  const browserResult = await WebBrowser.openAuthSessionAsync(authUrl, provider.redirectUrl)
+  if (browserResult.type !== "success") {
+    throw new Error(`Authorization cancelled or failed: ${browserResult.type}`)
+  }
+
+  const url = new URL(browserResult.url)
+  const code = url.searchParams.get("code")
+  if (!code) {
+    throw new Error("No code returned from authorization")
+  }
 
   await auth(provider, { serverUrl, authorizationCode: code })
 }
@@ -379,16 +366,22 @@ export async function reconnectService(
   provider: SecureStoreOAuthClientProvider,
   serverUrl: string,
 ): Promise<void> {
-  const codePromise = waitForCodeFromDeepLink(provider.redirectUrl)
-
   const result = await auth(provider, { serverUrl })
   if (result !== "REDIRECT") return
 
   const authUrl = provider.getAuthorizationUrl()
   if (!authUrl) throw new Error("No authorization URL available")
 
-  await Linking.openURL(authUrl)
-  const code = await codePromise
+  const browserResult = await WebBrowser.openAuthSessionAsync(authUrl, provider.redirectUrl)
+  if (browserResult.type !== "success") {
+    throw new Error(`Authorization cancelled or failed: ${browserResult.type}`)
+  }
+
+  const url = new URL(browserResult.url)
+  const code = url.searchParams.get("code")
+  if (!code) {
+    throw new Error("No code returned from authorization")
+  }
 
   await transport.finishAuth(code)
 }
