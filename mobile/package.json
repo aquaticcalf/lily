@@ -9,10 +9,8 @@
     "build:android:production": "pnpm dlx eas-cli build --profile production --platform android"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "catalog:",
     "@t3-oss/env-core": "catalog:",
     "@tanstack/react-query": "catalog:",
-    "axios": "catalog:",
     "expo": "catalog:",
     "expo-auth-session": "catalog:",
     "expo-dev-client": "catalog:",

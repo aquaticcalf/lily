@@ -1,3 +1,5 @@
 export { SecureStoreOAuthClientProvider } from "./provider"
-export { connectService, disconnectService, authorizeService } from "./client"
+export { MCPClient, connectService, disconnectService } from "./client"
+export { authorizeService, reconnectService, discoverOAuthServerInfo, auth } from "./auth"
+export { StreamableHTTPTransport } from "./transport"
 export type { MCPServiceConfig, ConnectedMCPService } from "./types"

@@ -1,13 +1,10 @@
 import * as SecureStore from "expo-secure-store"
 import type {
-  OAuthClientProvider,
-  OAuthDiscoveryState,
-} from "@modelcontextprotocol/sdk/client/auth.js"
-import type {
   OAuthClientMetadata,
-  OAuthClientInformationMixed,
+  OAuthClientInformation,
   OAuthTokens,
-} from "@modelcontextprotocol/sdk/shared/auth.js"
+  OAuthDiscoveryState,
+} from "./types"
 
 const STORAGE_KEYS = {
   tokens: (id: string) => `mcp/${id}/tokens`,
@@ -16,20 +13,24 @@ const STORAGE_KEYS = {
   discoveryState: (id: string) => `mcp/${id}/discovery`,
 } as const
 
-export class SecureStoreOAuthClientProvider implements OAuthClientProvider {
+export class SecureStoreOAuthClientProvider {
   private _authUrl: string | null = null
   private _redirectPort: number | null = null
 
   constructor(
-    private serviceId: string,
+    private _serviceId: string,
     private scheme: string = "lily",
   ) {}
 
+  get serviceId(): string {
+    return this._serviceId
+  }
+
   get redirectUrl(): string {
     if (this._redirectPort) {
-      return `http://localhost:${this._redirectPort}/callback/${this.serviceId}`
+      return `http://localhost:${this._redirectPort}/callback/${this._serviceId}`
     }
-    return `${this.scheme}://auth/mcp/${this.serviceId}`
+    return `${this.scheme}://auth/mcp/${this._serviceId}`
   }
 
   get clientMetadata(): OAuthClientMetadata {
@@ -45,25 +46,25 @@ export class SecureStoreOAuthClientProvider implements OAuthClientProvider {
     this._redirectPort = port
   }
 
-  async clientInformation(): Promise<OAuthClientInformationMixed | undefined> {
-    const raw = await SecureStore.getItemAsync(STORAGE_KEYS.clientInfo(this.serviceId))
+  async clientInformation(): Promise<OAuthClientInformation | undefined> {
+    const raw = await SecureStore.getItemAsync(STORAGE_KEYS.clientInfo(this._serviceId))
     return raw ? JSON.parse(raw) : undefined
   }
 
-  async saveClientInformation(clientInfo: OAuthClientInformationMixed): Promise<void> {
+  async saveClientInformation(clientInfo: OAuthClientInformation): Promise<void> {
     await SecureStore.setItemAsync(
-      STORAGE_KEYS.clientInfo(this.serviceId),
+      STORAGE_KEYS.clientInfo(this._serviceId),
       JSON.stringify(clientInfo),
     )
   }
 
   async tokens(): Promise<OAuthTokens | undefined> {
-    const raw = await SecureStore.getItemAsync(STORAGE_KEYS.tokens(this.serviceId))
+    const raw = await SecureStore.getItemAsync(STORAGE_KEYS.tokens(this._serviceId))
     return raw ? JSON.parse(raw) : undefined
   }
 
   async saveTokens(tokens: OAuthTokens): Promise<void> {
-    await SecureStore.setItemAsync(STORAGE_KEYS.tokens(this.serviceId), JSON.stringify(tokens))
+    await SecureStore.setItemAsync(STORAGE_KEYS.tokens(this._serviceId), JSON.stringify(tokens))
   }
 
   async redirectToAuthorization(authorizationUrl: URL): Promise<void> {
@@ -75,24 +76,24 @@ export class SecureStoreOAuthClientProvider implements OAuthClientProvider {
   }
 
   async saveCodeVerifier(codeVerifier: string): Promise<void> {
-    await SecureStore.setItemAsync(STORAGE_KEYS.codeVerifier(this.serviceId), codeVerifier)
+    await SecureStore.setItemAsync(STORAGE_KEYS.codeVerifier(this._serviceId), codeVerifier)
   }
 
   async codeVerifier(): Promise<string> {
-    const verifier = await SecureStore.getItemAsync(STORAGE_KEYS.codeVerifier(this.serviceId))
+    const verifier = await SecureStore.getItemAsync(STORAGE_KEYS.codeVerifier(this._serviceId))
     if (!verifier) throw new Error("No code verifier found")
     return verifier
   }
 
   async saveDiscoveryState(state: OAuthDiscoveryState): Promise<void> {
     await SecureStore.setItemAsync(
-      STORAGE_KEYS.discoveryState(this.serviceId),
+      STORAGE_KEYS.discoveryState(this._serviceId),
       JSON.stringify(state),
     )
   }
 
   async discoveryState(): Promise<OAuthDiscoveryState | undefined> {
-    const raw = await SecureStore.getItemAsync(STORAGE_KEYS.discoveryState(this.serviceId))
+    const raw = await SecureStore.getItemAsync(STORAGE_KEYS.discoveryState(this._serviceId))
     return raw ? JSON.parse(raw) : undefined
   }
 
@@ -100,16 +101,16 @@ export class SecureStoreOAuthClientProvider implements OAuthClientProvider {
     scope: "all" | "client" | "tokens" | "verifier" | "discovery",
   ): Promise<void> {
     if (scope === "all" || scope === "tokens") {
-      await SecureStore.deleteItemAsync(STORAGE_KEYS.tokens(this.serviceId))
+      await SecureStore.deleteItemAsync(STORAGE_KEYS.tokens(this._serviceId))
     }
     if (scope === "all" || scope === "client") {
-      await SecureStore.deleteItemAsync(STORAGE_KEYS.clientInfo(this.serviceId))
+      await SecureStore.deleteItemAsync(STORAGE_KEYS.clientInfo(this._serviceId))
     }
     if (scope === "all" || scope === "verifier") {
-      await SecureStore.deleteItemAsync(STORAGE_KEYS.codeVerifier(this.serviceId))
+      await SecureStore.deleteItemAsync(STORAGE_KEYS.codeVerifier(this._serviceId))
     }
     if (scope === "all" || scope === "discovery") {
-      await SecureStore.deleteItemAsync(STORAGE_KEYS.discoveryState(this.serviceId))
+      await SecureStore.deleteItemAsync(STORAGE_KEYS.discoveryState(this._serviceId))
     }
   }
 }
