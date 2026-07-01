@@ -1,5 +1,5 @@
 import { internal } from "data/convex/_generated/api"
-import { convexInternalMutation, convexInternalQuery } from "../convex"
+import { convexInternalMutation, convexInternalQuery } from "../convex.ts"
 
 export async function getConnectionToken(userId: string, connectionName: string) {
   const token = await convexInternalQuery(internal.tokens.get, { userId, provider: connectionName })

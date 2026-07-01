@@ -3,8 +3,8 @@ import {
   ConnectionAuthorizationRequiredError,
   defineInteractiveAuthorization,
 } from "eve/connections"
-import { getConnectionToken, setConnectionToken } from "./store"
-import type { OAuthConfig } from "./config"
+import { getConnectionToken, setConnectionToken } from "./store.ts"
+import type { OAuthConfig } from "./config.ts"
 
 export function defineOAuth(opts: OAuthConfig) {
   return defineInteractiveAuthorization<{

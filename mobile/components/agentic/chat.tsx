@@ -276,7 +276,7 @@ export function Composer({
             onChangeText={onChangeText}
             onSubmitEditing={handleSubmitEditing}
             placeholder={placeholder}
-            placeholderTextColorClassName="text-muted-foreground"
+            placeholderTextColor="#9ca3af"
             textAlignVertical="top"
             value={value}
           />

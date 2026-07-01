@@ -6,8 +6,8 @@ import {
 } from "eve/channels/auth"
 import { internal } from "data/convex/_generated/api"
 import { OAuth2Client } from "google-auth-library"
-import { convexInternalMutation } from "../convex"
-import { env } from "../env"
+import { convexInternalMutation } from "../convex.ts"
+import { env } from "../env.ts"
 
 const googleClient = new OAuth2Client(env.GOOGLE_CLIENT_ID)
 
