@@ -31,6 +31,7 @@ module.exports = {
     icon: `${iconRoot}/icon.png`,
     android: {
       package: `lol.calf.lily${variant.packageSuffix}`,
+      permissions: ["android.permission.MANAGE_EXTERNAL_STORAGE"],
       adaptiveIcon: {
         foregroundImage: `${iconRoot}/adaptive-icon.png`,
         backgroundColor: variant.adaptiveIconBackgroundColor,

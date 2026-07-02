@@ -3,7 +3,7 @@
   "private": true,
   "main": "index.tsx",
   "scripts": {
-    "dev": "expo start",
+    "dev": "expo start --clear",
     "build:android:development": "pnpm dlx eas-cli build --profile development --platform android",
     "build:android:preview": "pnpm dlx eas-cli build --profile preview --platform android",
     "build:android:production": "pnpm dlx eas-cli build --profile production --platform android"
